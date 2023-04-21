@@ -2,7 +2,6 @@ import type { IApi } from '@/types';
 
 export default (api: IApi) => {
   api.describe({ key: 'dumi-preset' });
-
   return {
     plugins: [
       require.resolve('./registerMethods'),

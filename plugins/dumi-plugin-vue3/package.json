@@ -1,0 +1,38 @@
+{
+  "name": "dumi-plugin-vue3",
+  "version": "0.0.1",
+  "description": "vue3 support plugin for dumi",
+  "keywords": [],
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "compiled"
+  ],
+  "scripts": {
+    "build": "father build",
+    "build:deps": "father prebundle",
+    "dev": "father dev",
+    "prepublishOnly": "father doctor && npm run build"
+  },
+  "dependencies": {
+    "@babel/core": "^7.21.4",
+    "@vue/babel-plugin-jsx": "^1.1.1",
+    "vue": "^3.2.47"
+  },
+  "devDependencies": {
+    "@types/babel__core": "^7.20.0",
+    "dumi": "workspace:*",
+    "father": "^4.1.9"
+  },
+  "peerDependencies": {
+    "dumi": "^2.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "authors": [
+    "PeachScript <scdzwyxst@gmail.com>"
+  ]
+}

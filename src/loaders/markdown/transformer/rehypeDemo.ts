@@ -89,9 +89,10 @@ function tryMarkDemoNode(node: Element, opts: IRehypeDemoOptions) {
   // to prevent duplicate mark
   if (!isDemoNode) {
     const lang = getCodeLang(node, opts);
-    const techStack =
-      lang && opts.techStacks.find((ts) => ts.isSupported(node, lang));
-
+    const attr = node.properties?.techstack;
+    let techStack = attr
+      ? opts.techStacks.find((ts) => ts.name === attr)
+      : lang && opts.techStacks.find((ts) => ts.isSupported(node, lang));
     // mark tech stack data for reuse
     if (techStack) {
       isDemoNode = true;
@@ -273,9 +274,39 @@ export default function rehypeDemo(
                 localId,
                 vFile.data.frontmatter!.atomId,
               );
-              component = `React.lazy(() => import( /* webpackChunkName: "${chunkName}" */ '${winPath(
+
+              component = `React.lazy(async () => {
+                const Chunk = await import( /* webpackChunkName: "${chunkName}" */ '${winPath(
                 parseOpts.fileAbsPath,
-              )}?techStack=${techStack.name}'))`;
+              )}?techStack=${techStack.name}');
+                ${
+                  techStack.name === 'vue3'
+                    ? `
+                  const { createApp } = await import('vue');
+                  const vueDemo = createApp(Chunk.default);
+                  vueDemo.config.errorHandle = (e) => {
+                    throw e;
+                  };
+                  return {
+                    default: () => {
+                      const demoRef = React.useRef();
+                      React.useEffect(() => {
+                        if (!demoRef.current) {
+                          return () => {};
+                        }
+                        const element = demoRef.current;
+                        vueDemo.mount(element);
+                        return () => {
+                          vueDemo.unmount();
+                        };
+                      }, []);
+                      return <div><span ref={demoRef}></span></div>;
+                    }
+                  };`
+                    : ''
+                }
+                return Chunk;
+            })`;
               // use code value as title
               // TODO: force checking
               if (codeValue) codeNode.properties!.title = codeValue;

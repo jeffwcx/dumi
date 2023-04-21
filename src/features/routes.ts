@@ -299,6 +299,7 @@ export default (api: IApi) => {
     }
 
     // append demo separate render page
+    // TODO: we should not use react to render vue, preact, solid
     routes['demo-render'] = {
       id: 'demo-render',
       path: `${SP_ROUTE_PREFIX}demos/:id`,

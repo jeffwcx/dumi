@@ -1,0 +1,21 @@
+{
+  "name": "@exmaples/vue3",
+  "description": "A vue3 component libraray",
+  "license": "MIT",
+  "scripts": {
+    "build": "node ../../bin/dumi.js build",
+    "dev": "node ../../bin/dumi.js dev",
+    "preview": "node ../../bin/dumi.js preview",
+    "setup": "node ../../bin/dumi.js setup",
+    "start": "npm run dev"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "vue": "^3.2.47"
+  },
+  "devDependencies": {
+    "dumi-plugin-vue3": "workspace:*",
+    "typescript": "~4.7.4"
+  },
+  "authors": []
+}
